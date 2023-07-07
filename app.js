@@ -11,7 +11,9 @@ const sequelize=require('./util/database');
 
 var cors=require('cors');
 
-app.use(cors());
+app.use(cors({
+    origin:"*"
+}));
 
 const User = require('./models/User');
 
