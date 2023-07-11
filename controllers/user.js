@@ -11,16 +11,16 @@ function isstringinvalid(string){
 
 const signup = async (req,res,next)=>{
     try{
-    const {name,email,phonenumber,password}=req.body;
+    const {username,email,phonenumber,password}=req.body;
 
-    if(isstringinvalid(name) || isstringinvalid(email) || isstringinvalid(phonenumber) || isstringinvalid(password) ){
+    if(isstringinvalid(username) || isstringinvalid(email) || isstringinvalid(phonenumber) || isstringinvalid(password) ){
         return res.status(400).json({err:"Bad parameters. Something is missing"})
     }
 
     const saltrounds=10;
     bcrypt.hash(password,saltrounds, async (err,hash)=>{
         try{
-            await User.create({name,email,phonenumber,password:hash});
+            await User.create({username,email,phonenumber,password:hash});
             res.status(201).json({message:'Successfully created new user'});
         }
         catch(err){
@@ -60,7 +60,7 @@ const login = async (req,res,next)=>{
                     throw new Error('Something went wrong')
                 }
                 if(result === true){
-                    res.status(200).json({success:true, message:"User logged in successfully",token:generateAccessToken(user[0].id,user[0].name)})
+                    res.status(200).json({success:true, message:"User logged in successfully",token:generateAccessToken(user[0].id,user[0].username)})
                 } else{
                     res.status(400).json({success:false, message:"Password is incorrect"})
                 } 
