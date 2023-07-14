@@ -5,7 +5,7 @@ const userAuthentication=require('../middleware/auth');
 
 const router=express.Router();
 
-router.post('/add-message',userAuthentication.authenticate,messageControllers.sendMessage);
+router.post('/add-message/:groupId',userAuthentication.authenticate,messageControllers.sendMessage);
 
-router.get('/get-message/:lastmsgId',messageControllers.getMessages);
+router.get('/get-message',messageControllers.getMessages);
 module.exports=router;
