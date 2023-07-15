@@ -79,7 +79,7 @@ exports.deleteGroup=async(req,res,next)=>{
 
 }
 
-exports.showchat = async(req,res,next)=>{
+exports.showChat = async(req,res,next)=>{
     try{
         const groupId=+req.query.groupId;
         const isInGroup= await Usergroup.findOne({where:{userId:req.user.id,groupId:groupId}})
@@ -94,7 +94,7 @@ exports.showchat = async(req,res,next)=>{
     }
 }
 
-exports.adduser = async(req,res,next)=>{
+exports.addUser = async(req,res,next)=>{
     try{
         const{username}=req.body;
         const groupId=+req.query.groupId;
@@ -113,6 +113,46 @@ exports.adduser = async(req,res,next)=>{
         }
         Usergroup.create({isadmin:false,groupId:groupId,userId:userId})
         res.status(200).json({message:"User has been added",success:true})
+    }
+    catch(err){
+        console.log(">>>>>>>>>",err);
+        res.status(500).json({message:"Something went Wrong",success:false,error:err})
+    }
+}
+
+exports.deleteUser = async(req,res,next)=>{
+    try{
+        const groupId=+req.query.groupId;
+        const delUid=+req.query.delUid;
+        const isadmin=await Usergroup.findOne({where:{groupId:groupId,isadmin:true,userId:req.user.id}})
+
+        if(!isadmin){
+          return res.status(500).json({message:"Only Admins are allowed to delete",success:false})  
+        }
+        await Usergroup.destroy({where:{groupId:groupId,userId:delUid}})
+        res.status(200).json({message:"Deleted User Successfully ",success:true})
+    }
+    catch(err){
+        console.log(">>>>>>>>>",err);
+        res.status(500).json({message:"Something went Wrong",success:false,error:err})
+    }
+}
+
+exports.makeAdmin = async(req,res,next)=>{
+    try{
+        const groupId=+req.query.groupId;
+        const memUid=+req.query.memUid;
+        const isadmin=await Usergroup.findOne({where:{groupId:groupId,isadmin:true,userId:req.user.id}})
+
+        if(!isadmin){
+          return res.status(500).json({message:"Only Admins are allowed to delete",success:false})  
+        }
+        await Usergroup.update({
+            isadmin:true
+        },{
+            where:{groupId:groupId,userId:memUid}
+        })
+        res.status(200).json({message:"User is now an Admin",success:true})
     }
     catch(err){
         console.log(">>>>>>>>>",err);

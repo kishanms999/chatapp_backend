@@ -13,8 +13,12 @@ router.get('/get-members',groupControllers.getGroupMembers);
 
 router.delete('/delete-group',userAuthentication.authenticate,groupControllers.deleteGroup);
 
-router.get('/show-chat',userAuthentication.authenticate,groupControllers.showchat);
+router.get('/show-chat',userAuthentication.authenticate,groupControllers.showChat);
 
-router.post('/add-user',userAuthentication.authenticate,groupControllers.adduser);
+router.post('/add-user',userAuthentication.authenticate,groupControllers.addUser);
+
+router.delete('/delete-user',userAuthentication.authenticate,groupControllers.deleteUser);
+
+router.get('/make-admin',userAuthentication.authenticate,groupControllers.makeAdmin);
 
 module.exports=router;
