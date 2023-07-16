@@ -32,6 +32,10 @@ const groupRoutes=require('./routes/group');
 app.use(bodyParser.json({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req,res) => {
+    res.sendFile(path.join(__dirname,`public/${req.url}`))
+})
+
 User.hasMany(Chat);
 Chat.belongsTo(User);
 
