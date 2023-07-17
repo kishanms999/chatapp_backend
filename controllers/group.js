@@ -99,10 +99,12 @@ exports.addUser = async(req,res,next)=>{
         const{username}=req.body;
         const groupId=+req.query.groupId;
         const userToAdd= await User.findOne({
-            where:{username:username}
+            where:{username:username},
+            attributes:['id','username']
         })
         console.log(userToAdd);
-        const userId=userToAdd.id;
+        console.log(userToAdd.dataValues)
+        const userId=userToAdd.dataValues.id;
         
         const isadmin=await Usergroup.findOne({where:{groupId:groupId,isadmin:true,userId:req.user.id}})
 
