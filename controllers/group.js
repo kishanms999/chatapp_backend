@@ -99,8 +99,7 @@ exports.addUser = async(req,res,next)=>{
         const{username}=req.body;
         const groupId=+req.query.groupId;
         const userToAdd= await User.findOne({
-            where:{username:username},
-            attributes:['id']
+            where:{username:username}
         })
         console.log(userToAdd);
         console.log(userToAdd.dataValues)
@@ -112,7 +111,7 @@ exports.addUser = async(req,res,next)=>{
           return res.status(500).json({message:"Only Admins are allowed to add users",success:false})  
         }
         Usergroup.create({isadmin:false,groupId:groupId,userId:userId})
-        res.status(200).json({message:"User has been added",success:true})
+        res.status(200).json({message:"User has been added",success:true,userdata:userToAdd})
     }
     catch(err){
         console.log(">>>>>>>>>",err);

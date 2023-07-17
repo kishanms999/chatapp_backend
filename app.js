@@ -15,6 +15,19 @@ app.use(cors({
     origin:"*"
 }));
 
+const io = require('socket.io')(8000,{
+    cors: {
+        origin: '*',
+      }
+});
+
+io.on('connection', socket => {
+    socket.on('send-message', room => {
+        console.log(room);
+        io.emit('receive-message', room);
+    });
+})
+
 const User = require('./models/User');
 
 const Chat=require('./models/Chat');

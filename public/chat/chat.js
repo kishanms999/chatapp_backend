@@ -14,6 +14,8 @@ const adduserbtn=document.getElementById('adduserbtn');
 
 const addusername=document.getElementById('useradd');
 
+const socket = io('http://54.85.152.105:8000');
+
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -45,6 +47,8 @@ async function sendmessage(e){
                const response= await axios.post(`http://54.85.152.105:3000/chat/add-message/${groupId}`,messagedata,{headers:{"Authorization":token}})
 
                console.log(response.data,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+               socket.emit('send-message', groupId);
                
                     showmessage(response.data.message.username,response.data.message.message)
                     message.value='';
@@ -150,6 +154,15 @@ async function sendmessage(e){
             }
         }
 
+        socket.on('receive-message', async (group) => {
+            const groupId=JSON.parse(localStorage.getItem('groupId'));
+            console.log(">>>>>",group,groupId);
+            console.log(group===groupId);
+            if(group === groupId){
+                getchats();
+            }
+          })
+
         deletegroupbtn.addEventListener('click',deleteGroup)
    
         async function deleteGroup(){
@@ -192,8 +205,7 @@ async function sendmessage(e){
                     const groupId=JSON.parse(localStorage.getItem('groupId'));
                     const token=localStorage.getItem('token');
                     const response= await axios.post(`http://54.85.152.105:3000/group/add-user?groupId=${groupId}`,usernameobj,{headers:{"Authorization":token}})
-                    console.log(response.data.message);
-                    getgroupmembers()
+                    showmember(response.data.userdata)
                 }
             }
             catch(err){
@@ -203,7 +215,7 @@ async function sendmessage(e){
 
         async function showmember(response){
             try{  
-                memberlist.innerHTML+=`<li>${response.username} <button onclick="deleteuser('${response.id}')">Delete User</button> <button onclick="makeadmin('${response.id}')">Make Admin</button></li>`;
+                memberlist.innerHTML+=`<li id="${response.id}">${response.username} <button onclick="deleteuser('${response.id}')">Delete User</button> <button onclick="makeadmin('${response.id}')">Make Admin</button></li>`;
             }catch(err){
                 throw new Error(err);
             }
@@ -215,7 +227,8 @@ async function sendmessage(e){
                 const token=localStorage.getItem('token');
                 const response= await axios.delete(`http://54.85.152.105:3000/group/delete-user?groupId=${groupId}&delUid=${id}`,{headers:{"Authorization":token}})
                 console.log(response.data.message);
-                getgroupmembers();
+                deluser = document.getElementById(`${id}`);
+                memberlist.removeChild(deluser);
             }
             catch(err){
                 console.log(err);
