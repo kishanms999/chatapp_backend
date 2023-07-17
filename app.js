@@ -32,6 +32,10 @@ const groupRoutes=require('./routes/group');
 app.use(bodyParser.json({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/user',userRoutes);
+app.use('/chat',chatRoutes);
+app.use('/group',groupRoutes);
+
 app.use((req,res) => {
     res.sendFile(path.join(__dirname,`public/${req.url}`))
 })
@@ -44,10 +48,6 @@ Group.belongsToMany(User,{through :UserGroup});
 
 Group.hasMany(Chat);
 Chat.belongsTo(Group);
-
-app.use('/user',userRoutes);
-app.use('/chat',chatRoutes);
-app.use('/group',groupRoutes);
 
 sequelize.sync().then(result=>{
     app.listen(process.env.PORT||3000);
