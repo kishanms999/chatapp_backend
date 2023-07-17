@@ -102,8 +102,7 @@ exports.addUser = async(req,res,next)=>{
             where:{username:username}
         })
         console.log(userToAdd);
-        console.log(userToAdd.dataValues)
-        const userId=userToAdd.dataValues.id;
+        const userId=userToAdd.id;
         
         const isadmin=await Usergroup.findOne({where:{groupId:groupId,isadmin:true,userId:req.user.id}})
 
