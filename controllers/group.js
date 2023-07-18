@@ -97,6 +97,7 @@ exports.showChat = async(req,res,next)=>{
 exports.addUser = async(req,res,next)=>{
     try{
         const{username}=req.body;
+        console.log(username);
         const groupId=+req.query.groupId;
         const userToAdd= await User.findOne({
             where:{username:username},
