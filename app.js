@@ -11,6 +11,10 @@ const sequelize=require('./util/database');
 
 var cors=require('cors');
 
+const fileupload=require('express-fileupload');
+
+app.use(fileupload());
+
 app.use(cors({
     origin:"*"
 }));
