@@ -59,23 +59,15 @@ input{
     table-layout: fixed;
 }
 .currentuser{
-    margin: 10px;
-    margin-left:50%;
+    margin: 10px 0 10px auto;
     background-color: #08f8f8ef;
     border: 1px solid #08f8f8ef;
-    border-radius:10px;
-    width: fit-content;
-    
 }
 
 .otheruser{
-    margin: 10px;
-    margin-left:50%;
+    margin: 10px 0 10px auto;
     background-color: #ffffff;
     border: 1px solid #ffffff;
-    border-radius:10px;
-    width: fit-content;
-    
 }
 
 .tbody{

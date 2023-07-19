@@ -271,7 +271,7 @@ async function sendmessage(e){
              console.log(formData);
              const groupId=JSON.parse(localStorage.getItem('groupId'));
              const token=localStorage.getItem('token');
-             const response=await axios.post(`http://localhost:3000/chat/sendfile/${groupId}`,formData,{headers:{"Authorization":token,'Content-Type':'multipart/form-data'}});
+             const response=await axios.post(`http://54.85.152.105:3000/chat/sendfile/${groupId}`,formData,{headers:{"Authorization":token,'Content-Type':'multipart/form-data'}});
                  console.log(response);
                  showmessage(response.data.message.username,response.data.message.message)
                  uploadedfile.value=null;
